@@ -1,0 +1,48 @@
+from torch.utils.data import DataLoader
+from data_loaders.tensors import collate as all_collate
+from data_loaders.tensors import t2m_collate
+
+def get_dataset_class(name):
+    if name == "humanml":
+        from data_loaders.humanml.data.dataset import HumanML3D
+        return HumanML3D
+
+    elif name == "how2sign":
+        from data_loaders.humanml.data.dataset import How2Sign
+        return How2Sign
+
+    elif name == "phoenix":
+        from data_loaders.humanml.data.dataset import Phoenix
+        return Phoenix
+
+    elif name == "youtube_sign":
+        from data_loaders.humanml.data.dataset import YouTubeSign
+        return YouTubeSign
+
+    else:
+        raise ValueError(f'Unsupported dataset name [{name}]')
+
+def get_collate_fn(name, hml_mode='train'):
+    if hml_mode == 'gt':
+        from data_loaders.humanml.data.dataset import collate_fn as t2m_eval_collate
+        return t2m_eval_collate
+
+    return t2m_collate
+
+
+def get_dataset(name, split='train', hml_mode='train'):
+    DATA = get_dataset_class(name)
+    dataset = DATA(split=split, mode=hml_mode)
+    return dataset
+
+
+def get_dataset_loader(name, batch_size, num_frames=500, split='train', hml_mode='train'):
+    dataset = get_dataset(name, split, hml_mode)
+    collate = get_collate_fn(name, hml_mode)
+
+    loader = DataLoader(
+        dataset, batch_size=batch_size, shuffle=True,
+        num_workers=8, drop_last=True, collate_fn=collate
+    )
+
+    return loader
