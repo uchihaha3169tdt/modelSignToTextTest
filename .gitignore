@@ -1,0 +1,17 @@
+dataset/PHOENIX
+dataset/HOW2SIGN
+dataset/YOUTUBE_SIGN
+ProgressiveTransformersSLP/Data/tmp
+save
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+glove/
+*.egg-info/
+dist/
+build/
+.idea/
+.vscode/
+*.swp
