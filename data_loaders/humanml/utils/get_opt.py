@@ -39,7 +39,7 @@ def get_opt(opt_path, device):
             if line.strip() not in skip:
                 key, value = line.strip().split(': ')
                 if value in ('True', 'False'):
-                    opt_dict[key] = bool(value)
+                    opt_dict[key] = value == 'True'
                 elif is_float(value):
                     opt_dict[key] = float(value)
                 elif is_number(value):
