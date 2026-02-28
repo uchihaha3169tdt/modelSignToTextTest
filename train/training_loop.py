@@ -13,8 +13,6 @@ from diffusion.fp16_util import MixedPrecisionTrainer
 from diffusion.resample import LossAwareSampler
 from tqdm import tqdm
 from diffusion.resample import create_named_schedule_sampler
-from data_loaders.humanml.networks.evaluator_wrapper import EvaluatorMDMWrapper
-from eval import eval_humanml
 from data_loaders.get_data import get_dataset_loader
 INITIAL_LOG_LOSS_SCALE = 20.0
 import numpy as np
@@ -114,6 +112,8 @@ class TrainLoop:
         self.schedule_sampler = create_named_schedule_sampler(self.schedule_sampler_type, diffusion)
         self.eval_wrapper, self.eval_data, self.eval_gt_data = None, None, None
         if args.eval_during_training:
+            from data_loaders.humanml.networks.evaluator_wrapper import EvaluatorMDMWrapper
+            from eval import eval_humanml
             mm_num_samples = 0  # mm is super slow hence we won't run it during training
             mm_num_repeats = 0  # mm is super slow hence we won't run it during training
             gen_loader = get_dataset_loader(name=args.dataset, batch_size=args.eval_batch_size, num_frames=None,
