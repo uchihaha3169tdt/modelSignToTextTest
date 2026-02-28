@@ -37,7 +37,11 @@ def get_opt(opt_path, device):
     with open(opt_path) as f:
         for line in f:
             if line.strip() not in skip:
-                key, value = line.strip().split(': ')
+                parts = line.strip().split(': ', 1)
+                if len(parts) != 2:
+                    print(f'Warning: skipping malformed opt line: {line.strip()!r}')
+                    continue
+                key, value = parts
                 if value in ('True', 'False'):
                     opt_dict[key] = value == 'True'
                 elif is_float(value):
