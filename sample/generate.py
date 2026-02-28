@@ -4,8 +4,13 @@
 Generate a large batch of image samples from a model and save them as a large
 numpy array. This can be used to produce samples for FID evaluation.
 """
-from utils.fixseed import fixseed
 import os
+import sys
+
+# Ensure the project root is on sys.path when running this script directly
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from utils.fixseed import fixseed
 import numpy as np
 import torch
 from utils.parser_util import generate_args
